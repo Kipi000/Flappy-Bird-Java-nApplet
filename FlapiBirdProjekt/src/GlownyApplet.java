@@ -1,5 +1,4 @@
-import javax.swing.JApplet;
-import javax.swing.Timer;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -13,22 +12,30 @@ public class GlownyApplet extends JApplet implements ActionListener{
 	
 	Timer timer;
 	Image img;
-	@Override
+	
+	JPanel obraz = new JPanel() {
+		public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.setColor(new Color(77, 129, 249));
+    		g.fillRect(0, 0, getWidth(), getHeight());
+    		g.drawImage(img, 30, ptakY, 45, 35, this);
+    		g.setColor(Color.green);
+    		g.fillRect(ruraX, 0, 50, ruraWys);
+    		g.fillRect(ruraX, ruraWys+przerwa, 50, getHeight());
+	}
+	};
 	public void init() {
 		setSize(500, 500);
+		add(obraz);
 		img = getImage(getDocumentBase(), "ptak.png");
 		timer = new Timer(20, this);
         timer.start();
-	}
-
-	@Override
-	public void paint(java.awt.Graphics g) {
-		g.setColor(new Color(77, 129, 249));
-		g.fillRect(0, 0, getWidth(), getHeight());
-		g.drawImage(img, 30, ptakY, 45, 35, this);
-		g.setColor(Color.green);
-		g.fillRect(ruraX, 0, 50, ruraWys);
-		g.fillRect(ruraX, ruraWys+przerwa, 50, getHeight());
+        addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+        		ptakV = -12;
+        	}
+        });
+        
 	}
 	public void actionPerformed(ActionEvent e) {
 		ptakV += 1;
@@ -44,6 +51,10 @@ public class GlownyApplet extends JApplet implements ActionListener{
 			ptakY = getHeight()-20;
 			ptakV = 0;
 		}
-		repaint();
+		if (ptakY < 0) {
+			ptakY = 0;
+			ptakV = 0;
+		}
+		obraz.repaint();
 	}
 }
