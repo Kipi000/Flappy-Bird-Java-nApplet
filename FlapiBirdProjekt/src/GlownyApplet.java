@@ -1,11 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 
 public class GlownyApplet extends JApplet implements ActionListener{
-	int ruraWys = 150;
-	int ruraX = 400;
-	int przerwa = 150;
+	Random Rand = new Random();
+	
+	int ruraWys = Rand.nextInt(150)+1;
+	int ruraX = 450;
+	int przerwa = Rand.nextInt(50)+120;
 	
 	int ptakY = 200;
 	int ptakV = 0;
