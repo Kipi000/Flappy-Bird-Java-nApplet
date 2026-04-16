@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
 
-public class GlownyApplet extends JApplet implements ActionListener{
+public class GlownyApplet extends JApplet implements ActionListener, MouseListener{
 	Random Rand = new Random();
 	
 	int ruraWys = Rand.nextInt(300);
@@ -22,7 +22,6 @@ public class GlownyApplet extends JApplet implements ActionListener{
 	
 	JPanel obraz = new JPanel() {
 		public void paintComponent(Graphics g) {
-            super.paintComponent(g);
             g.setColor(new Color(77, 129, 249));
     		g.fillRect(0, 0, getWidth(), getHeight());
     		g.drawImage(img, 30, ptakY, 45, 35, this);
@@ -30,11 +29,13 @@ public class GlownyApplet extends JApplet implements ActionListener{
     		g.fillRect(ruraX, 0, 50, ruraWys);
     		g.fillRect(ruraX, ruraWys+przerwa, 50, getHeight());
     		 if (gameOver == true) {
+    			 g.setColor(new Color(77, 129, 249));
+    			 g.fillRect(0, 0, getWidth(), getHeight());
                  g.setColor(Color.red);
                  g.setFont(new Font("Arial", Font.BOLD, 30));
-                 g.drawString("GAME OVER", 180, 200);
+                 g.drawString("GAME OVER", 170, 220);
                  g.setColor(Color.white);
-                 g.drawString("LICZBA PUNKTÓW: "+n, 120, 250);
+                 g.drawString("LICZBA PUNKTÓW: "+n, 110, 270);
              }else {
             	 g.setColor(Color.white);
             	 g.drawString("Liczba punktów "+n, 200, 20);
@@ -47,12 +48,11 @@ public class GlownyApplet extends JApplet implements ActionListener{
 		img = getImage(getDocumentBase(), "ptak.png");
 		timer = new Timer(20, this);
         timer.start();
-        addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-        		ptakV = -12;
-        		n=n+1;
-        	}
-        });
+        addMouseListener(this);
+	}
+    public void mousePressed(MouseEvent e) {
+		ptakV = -12;
+		n = n + 1;
 	}
 	
     public void gameOver() {
@@ -79,7 +79,7 @@ public class GlownyApplet extends JApplet implements ActionListener{
 			ptakY = 0;
 			ptakV = 0;
 		}
-		Rectangle ptak = new Rectangle(30, ptakY, 40, 30);
+		Rectangle ptak = new Rectangle(30, ptakY, 40, 25);
         Rectangle ruraGorna = new Rectangle(ruraX, 0, 50, ruraWys);
         Rectangle ruraDolna = new Rectangle(ruraX, ruraWys + przerwa, 50, getHeight());
 
@@ -88,4 +88,8 @@ public class GlownyApplet extends JApplet implements ActionListener{
         }
 		obraz.repaint();
 	}
+	public void mouseReleased(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {}
 }
