@@ -13,8 +13,12 @@ public class GlownyApplet extends JApplet implements ActionListener{
 	int ptakY = 200;
 	int ptakV = 0;
 	
+	int n = 0;
+	
 	Timer timer;
 	Image img;
+	
+	boolean gameOver = false;
 	
 	JPanel obraz = new JPanel() {
 		public void paintComponent(Graphics g) {
@@ -25,6 +29,16 @@ public class GlownyApplet extends JApplet implements ActionListener{
     		g.setColor(Color.green);
     		g.fillRect(ruraX, 0, 50, ruraWys);
     		g.fillRect(ruraX, ruraWys+przerwa, 50, getHeight());
+    		 if (gameOver == true) {
+                 g.setColor(Color.red);
+                 g.setFont(new Font("Arial", Font.BOLD, 30));
+                 g.drawString("GAME OVER", 180, 200);
+                 g.setColor(Color.white);
+                 g.drawString("LICZBA PUNKTÓW: "+n, 120, 250);
+             }else {
+            	 g.setColor(Color.white);
+            	 g.drawString("Liczba punktów "+n, 200, 20);
+             }
 	}
 	};
 	public void init() {
@@ -36,10 +50,16 @@ public class GlownyApplet extends JApplet implements ActionListener{
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
         		ptakV = -12;
+        		n=n+1;
         	}
         });
-        
 	}
+	
+    public void gameOver() {
+        gameOver = true;
+        timer.stop();
+    }
+    
 	public void actionPerformed(ActionEvent e) {
 		ptakV += 1;
 		ptakY += ptakV;
@@ -53,13 +73,19 @@ public class GlownyApplet extends JApplet implements ActionListener{
 		}
 		
 		if (ptakY > getHeight()-20) {
-			ptakY = getHeight()-20;
-			ptakV = 0;
+			gameOver();
 		}
 		if (ptakY < 0) {
 			ptakY = 0;
 			ptakV = 0;
 		}
+		Rectangle ptak = new Rectangle(30, ptakY, 40, 30);
+        Rectangle ruraGorna = new Rectangle(ruraX, 0, 50, ruraWys);
+        Rectangle ruraDolna = new Rectangle(ruraX, ruraWys + przerwa, 50, getHeight());
+
+        if (ptak.intersects(ruraGorna) || ptak.intersects(ruraDolna)) {
+            gameOver();
+        }
 		obraz.repaint();
 	}
 }
