@@ -6,7 +6,7 @@ import java.util.Random;
 public class GlownyApplet extends JApplet implements ActionListener{
 	Random Rand = new Random();
 	
-	int ruraWys = Rand.nextInt(150)+1;
+	int ruraWys = Rand.nextInt(300);
 	int ruraX = 450;
 	int przerwa = Rand.nextInt(50)+120;
 	
@@ -47,6 +47,8 @@ public class GlownyApplet extends JApplet implements ActionListener{
 		ruraX -= 5;
 		
 		if(ruraX + 50 < 0) {
+			ruraWys = Rand.nextInt(300);
+			przerwa = Rand.nextInt(50)+120;
 			ruraX = getWidth();
 		}
 		
